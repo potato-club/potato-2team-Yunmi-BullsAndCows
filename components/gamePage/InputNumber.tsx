@@ -5,10 +5,11 @@ import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import {
   concatGameRecord,
-  concatRangking,
+  concatRanking,
   insertGameRecord,
 } from "../../src/store/index";
 import { createNumber } from "../../util/CreateNumber";
+import { CheckNumber } from "../../util/CheckNumber";
 
 const InputNumber = () => {
   const router = useRouter();
@@ -21,36 +22,28 @@ const InputNumber = () => {
   const winGame = () => {
     let player: string = prompt("승리하였습니다!\n닉네임: ") || "익명";
     dispatch(insertGameRecord(""));
-    dispatch(concatRangking({ score: playCount, nickName: player }));
+    dispatch(concatRanking({ score: playCount, nickName: player }));
     router.push("/");
   };
 
   const setData = () => {
     setPlayCount((prev) => prev + 1);
-    let st = 0;
-    let b = 0;
-    let out = 4;
-    for (let i = 0; i < 4; ++i) {
-      for (let j = 0; j < 4; ++j) {
-        if (resultNumber.current[i] === value[j]) {
-          if (i === j) {
-            st += 1;
-            out -= 1;
-          } else {
-            b += 1;
-            out -= 1;
-          }
-        }
-      }
-    }
-
-    dispatch(
-      concatGameRecord(
-        value + " - ST: " + st + "개  B: " + b + "개  O:" + out + "개<br>"
-      )
-    );
-    if (st == 4) {
+    const temp = CheckNumber(resultNumber.current, value);
+    if (temp.st == 4) {
       winGame();
+    } else {
+      dispatch(
+        concatGameRecord(
+          value +
+            " - ST: " +
+            temp.st +
+            "개  B: " +
+            temp.b +
+            "개  O:" +
+            temp.out +
+            "개<br>"
+        )
+      );
     }
     console.log("ssdd");
   };
@@ -63,7 +56,9 @@ const InputNumber = () => {
   return (
     <InputNumberWrap>
       <Input onChange={onChangeHandler} />
-      <Button onClick={setData}>버튼</Button>
+      <Button heightSize={32} onClick={setData}>
+        확인
+      </Button>
     </InputNumberWrap>
   );
 };
@@ -73,4 +68,5 @@ export default InputNumber;
 const InputNumberWrap = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: 24px;
 `;

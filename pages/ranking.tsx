@@ -1,19 +1,20 @@
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { RangkingRecord } from "../components/RangkingPage";
+import { RankingRecord } from "../components/RankingPage";
 import { Button } from "../components/common/index";
+import Title from "../components/common/Title";
 
-export type rangkingOb = {
+export type RankingOb = {
   score: number;
   nickNAme: string;
 };
 export type data = {
   gamerecordData: string;
-  rangkingData: rangkingOb[];
+  RankingData: RankingOb[];
 };
 
-const Rangking = () => {
+const Ranking = () => {
   const router = useRouter();
 
   const moveMain = () => {
@@ -23,14 +24,16 @@ const Rangking = () => {
   return (
     <Wrapper>
       <Header>
-        <Title>RangkingPage</Title>
-        <Button onClick={moveMain}>메인페이지로</Button>
+        <Title text={"RankingPage"} />
+        <Button heightSize={56} onClick={moveMain}>
+          메인페이지로
+        </Button>
       </Header>
-      <RangkingRecord />
+      <RankingRecord />
     </Wrapper>
   );
 };
-export default Rangking;
+export default Ranking;
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,8 +48,4 @@ const Header = styled.div`
   margin: 24px;
   justify-content: center;
   align-items: center;
-`;
-
-const Title = styled.div`
-  font-size: 72px;
 `;

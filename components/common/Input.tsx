@@ -11,6 +11,7 @@ const Input = ({ onChange }: Props) => {
 export default Input;
 
 const InputStyled = styled.input`
-  margin: 8px;
+  margin-top: 24px;
   font-size: 24px;
+  height: 32px;
 `;
