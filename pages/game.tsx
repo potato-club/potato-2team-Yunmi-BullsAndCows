@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { insertGameRecord } from "../src/store/index";
 import { InputNumber, GameRecord } from "../components/gamePage";
 import { Button } from "../components/common/index";
+import Title from "../components/common/Title";
 
 const Game = () => {
   const router = useRouter();
@@ -16,8 +17,10 @@ const Game = () => {
   return (
     <Wrapper>
       <Header>
-        <Title>gamepage</Title>
-        <Button onClick={moveMain}>게임 포기</Button>
+        <Title text={"gamepage"} />
+        <Button heightSize={56} onClick={moveMain}>
+          게임 포기
+        </Button>
       </Header>
       <InputNumber />
       <GameRecord />
@@ -39,8 +42,4 @@ const Header = styled.div`
   margin: 24px;
   justify-content: center;
   align-items: center;
-`;
-
-const Title = styled.div`
-  font-size: 72px;
 `;

@@ -3,7 +3,7 @@
 // 액션 선언
 const INSERT_GAMERECORD = "data/INSERT_GAMERECORD" as const;
 const CONCAT_GAMERECORD = "data/CONCAT_GAMERECORD" as const;
-const CONCAT_RANGKING = "data/CONCAT_RANGKING" as const;
+const CONCAT_RANKING = "data/CONCAT_RANKING" as const;
 
 //액션 생성함수
 export const insertGameRecord = (value: string) => ({
@@ -16,57 +16,63 @@ export const concatGameRecord = (value: string) => ({
   payload: value,
 });
 
-export const concatRangking = (value: any) => ({
-  type: CONCAT_RANGKING,
+export const concatRanking = (value: any) => ({
+  type: CONCAT_RANKING,
   payload: value,
 });
 
 type ActionType =
   | ReturnType<typeof insertGameRecord>
   | ReturnType<typeof concatGameRecord>
-  | ReturnType<typeof concatRangking>;
+  | ReturnType<typeof concatRanking>;
 
 // 상태 초기값
 
-export type rangkingOb = {
+export type rankingOb = {
   score: number;
   nickName: string;
 };
 
 export type data = {
   gamerecordData: string;
-  rangkingData: rangkingOb[];
+  rankingData: rankingOb[];
 };
 const initialValue: data = {
   gamerecordData: "",
-  rangkingData: [],
+  rankingData: [],
 };
 
 //리듀서 생성
-export function reducer(state: data = initialValue, action: ActionType): data {
+export function reducer(state: data = initialValue, action: ActionType) {
   switch (action.type) {
     case CONCAT_GAMERECORD:
-      state.gamerecordData += action.payload;
-      return Object.assign({}, state);
+      return {
+        ...state,
+        ...{
+          gamerecordData: (state.gamerecordData += action.payload),
+        },
+      };
     case INSERT_GAMERECORD:
       state.gamerecordData = action.payload;
       return Object.assign({}, state);
-    case CONCAT_RANGKING:
+    case CONCAT_RANKING:
       const temp = {
         score: action.payload.score,
         nickName: action.payload.nickName,
       };
       let i;
-      for (i = 0; i < state.rangkingData.length; ++i) {
-        if (state.rangkingData[i].score < temp.score) {
+      for (i = 0; i < state.rankingData.length; ++i) {
+        if (state.rankingData[i].score < temp.score) {
           continue;
         } else {
           break;
         }
       }
-      state.rangkingData.splice(i, 0, temp);
+      state.rankingData.splice(i, 0, temp);
       return Object.assign({}, state);
     default:
       return state;
   }
 }
+
+export type RootState = ReturnType<typeof reducer>;
